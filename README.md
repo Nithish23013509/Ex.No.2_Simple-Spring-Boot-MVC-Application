@@ -62,56 +62,84 @@ spring-mvc-demo/
 ├── pom.xml
 
 ### pom.xml :
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>4.0.6</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.example</groupId>
+	<artifactId>demo</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name/>
+	<description/>
+	<url/>
+	<licenses>
+		<license/>
+	</licenses>
+	<developers>
+		<developer/>
+	</developers>
+	<scm>
+		<connection/>
+		<developerConnection/>
+		<tag/>
+		<url/>
+	</scm>
+	<properties>
+		<java.version>21</java.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webmvc</artifactId>
+		</dependency>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webmvc-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
-    <groupId>com.example</groupId>
-    <artifactId>spring-mvc-demo</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>Spring MVC Demo</name>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.2</version>
-    </parent>
-
-    <dependencies>
-        <!-- Spring Web -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <!-- Thymeleaf for View Rendering -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-    </dependencies>
 </project>
+```
 
 ### MvcApplication.java (Main Class):
+```
+package com.example.demo;
 
-package com.example.mvc;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-@SpringBootApplication
-public class MvcApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(MvcApplication.class, args);
+@RestController
+public class demo2 {
+    @GetMapping("/")
+    public String test1()
+    {
+        return "Hello world";
     }
 }
+```
 
 ### HomeController.java (Controller):
+```
+ppackage com.example.MVC_Application;
 
-package com.example.mvc;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -122,23 +150,106 @@ public class HomeController {
 
     @GetMapping("/")
     public String homePage(Model model) {
-        model.addAttribute("message", "Welcome to Spring Boot MVC!");
-        return "index";  // refers to index.html in templates folder
+        System.out.println("Controller is called"); // DEBUG
+        model.addAttribute("message", "Welcome To ThymeLeaf");
+        return "index";
     }
 }
-### index.html (View – inside src/main/resources/templates/):
+```
 
+### Script.js
+```
+function showMessge() {
+    alert("Hello nanba! 👋 Welcome to Thymeleaf Page!");
+}
+
+function changeText() {
+    document.getElementById("demo").innerHTML = "Text Changed Successfully!";
+}
+```
+
+### Style.css
+```
+/* Reset some default styles */
+body {
+    font-family: "Times New Roman", sans-serif;
+    background: linear-gradient(to right, #4facfe, #00f2fe);
+    text-align: center;
+    padding: 50px;
+    color: #333;
+}
+
+/* Heading */
+h1 {
+    color: white;
+    margin-top: 40px;
+}
+
+/* Paragraph */
+#demo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #222;
+}
+
+/* Buttons */
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    font-family: "Times New Roman", sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* First button */
+button:nth-child(2) {
+    background-color: #0000FF;
+    color: white;
+}
+
+/* Second button */
+button:nth-child(3) {
+    background-color: #28a745;
+    color: white;
+}
+
+/* Hover effect */
+button:hover {
+    transform: scale(1.1);
+    opacity: 0.9;
+}
+```
+
+### index.html (View – inside src/main/resources/templates/):
+```
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
-    <title>Spring MVC</title>
+    <title>Home</title>
+    <link rel="stylesheet" th:href="@{style.css}">
 </head>
 <body>
-    <h1 th:text="${message}">Default Message</h1>
+<p id ="demo">Original Text</p>
+<button onclick="showMessage()">Click Me</button>
+
+<button onclick="changeText()">Change</button>
+
+<script th:src="@{script.js}"></script>
+<h1>Welcome to Java Application</h1>
+<h1>JAVA WEB APPLICATION DEVELOPMENT</h1>
 </body>
 </html>
-
+```
 ### application.properties:
- server.port=8081
+``` server.port=8080 ```
 
+### Output
+<img width="1600" height="772" alt="WhatsApp Image 2026-05-13 at 11 03 19 AM" src="https://github.com/user-attachments/assets/79f6d283-7565-4633-b77d-2a90217b6396" />
 
+### Result
+A simple Spring Boot MVC application was successfully developed and executed, displaying dynamic content using Thymeleaf with interactive UI functionality.
